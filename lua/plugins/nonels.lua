@@ -26,13 +26,25 @@ return {
       diagnostics.checkmake,
       formatting.prettier.with({
         filetypes = { "html", "json", "yaml", "markdown", "javascript", "typescript", "css", "scss", "less" },
-        extra_args = { "--end-of-line", "lf", "--prose-wrap", "always", "--no-trailing-spaces" },
+        extra_args = {
+          "--end-of-line",
+          "lf",
+          "--prose-wrap",
+          "always",
+          "--no-trailing-spaces",
+          "--single-quote",
+          "--arrow-parens",
+          "always",
+          "--print-width",
+          "100",
+        },
       }),
       formatting.stylua,
       formatting.shfmt.with({ args = { "-i", "4" } }),
       formatting.terraform_fmt,
       require("none-ls.formatting.ruff").with({ extra_args = { "--extend-select", "I" } }),
       require("none-ls.formatting.ruff_format"),
+      formatting.eslint_d, -- Ensures ESLint handles import sorting
     }
 
     local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -47,7 +59,7 @@ return {
             group = augroup,
             buffer = bufnr,
             callback = function()
-              vim.lsp.buf.format({ async = false })
+              vim.lsp.buf.format({ async = false, silent = true })
             end,
           })
         end
