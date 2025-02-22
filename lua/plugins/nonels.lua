@@ -1,5 +1,10 @@
+if true then
+  return {}
+end
+
 return {
   "nvimtools/none-ls.nvim",
+  enabled = false,
   dependencies = {
     "nvimtools/none-ls-extras.nvim",
     "jayp0521/mason-null-ls.nvim", -- ensure dependencies are installed
@@ -23,29 +28,36 @@ return {
     })
 
     local sources = {
-      diagnostics.checkmake,
+      diagnostics.eslint_d, -- Keep only diagnostics
       formatting.prettier.with({
         filetypes = { "html", "json", "yaml", "markdown", "javascript", "typescript", "css", "scss", "less" },
-        extra_args = {
-          "--end-of-line",
-          "lf",
-          "--prose-wrap",
-          "always",
-          "--no-trailing-spaces",
-          "--single-quote",
-          "--arrow-parens",
-          "always",
-          "--print-width",
-          "100",
-        },
+        extra_args = { "--print-width", "100", "--single-quote", "--arrow-parens", "always" },
       }),
-      formatting.stylua,
-      formatting.shfmt.with({ args = { "-i", "4" } }),
-      formatting.terraform_fmt,
-      require("none-ls.formatting.ruff").with({ extra_args = { "--extend-select", "I" } }),
-      require("none-ls.formatting.ruff_format"),
-      formatting.eslint_d, -- Ensures ESLint handles import sorting
     }
+    -- local sources = {
+    --   diagnostics.checkmake,
+    --   formatting.prettier.with({
+    --     filetypes = { "html", "json", "yaml", "markdown", "javascript", "typescript", "css", "scss", "less" },
+    --     extra_args = {
+    --       "--end-of-line",
+    --       "lf",
+    --       "--prose-wrap",
+    --       "always",
+    --       "--no-trailing-spaces",
+    --       "--single-quote",
+    --       "--arrow-parens",
+    --       "always",
+    --       "--print-width",
+    --       "100",
+    --     },
+    --   }),
+    --   formatting.stylua,
+    --   formatting.shfmt.with({ args = { "-i", "4" } }),
+    --   formatting.terraform_fmt,
+    --   require("none-ls.formatting.ruff").with({ extra_args = { "--extend-select", "I" } }),
+    --   require("none-ls.formatting.ruff_format"),
+    --   formatting.eslint_d, -- Ensures ESLint handles import sorting
+    -- }
 
     local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
     null_ls.setup({

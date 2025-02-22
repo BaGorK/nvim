@@ -20,7 +20,7 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
 
     -- Import LazyVim extras, including none-ls for formatting and linting
-    { import = "lazyvim.plugins.extras.lsp.none-ls" },
+    -- { import = "lazyvim.plugins.extras.lsp.none-ls" },
 
     -- import/override with your plugins
     { import = "plugins" },
@@ -34,6 +34,15 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
+  plugins = {
+    -- For disabling inlay hints via nvim-lspconfig
+    {
+      "nvim-lspconfig",
+      opts = {
+        inlay_hints = { enabled = false },
+      }
+    },
+  },
   install = { colorscheme = { "tokyonight", "habamax" } },
   checker = {
     enabled = true, -- check for plugin updates periodically
